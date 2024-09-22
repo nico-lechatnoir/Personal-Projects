@@ -1,37 +1,39 @@
+const sent = "Hello Vs. w/ the Theme is the anThem & Bigest The Story Of All Time tv id tmu";
 String.prototype.toTitleCase = function () {
-	var str = this.replace(/\b\w/g, (match) => match.toUpperCase());
     // Certain words such as initialisms or acronyms should be left uppercase
-	const upper = ["Id", "Tv"];
+	const upper = ["Id", "Tv", "Tmu", "Q&a"];
 	const reUpper = new RegExp(`\\b(${upper.join("|")})\\b`, "g");
-	str = str.replace(reUpper, (match) => match.toUpperCase());
-
 	const lower = ['A', 'An', 'And', 'As', 'At', 'B/c', 'But', 'By', 'For', 'From', 'In', 'Into', 'Ios', 'Ipad', 'Iphone', 'Near', 'Nor', 'Of', 'On', 'Onto', 'Or', 'The', 'To', 'V.', 'Versus', 'Via', 'Vs.', 'W.', 'W/', 'With'];
 	const reLower = new RegExp(`\\b(${lower.join("|")})\\b`, "g");
 
-	if (str.search(reLower) === 0) {
-        let ignore = str.match(reLower)[0];
-		return ignore + str.substring(ignore.length).replace(reLower, (match) => match.toLowerCase());
-	}
-	return str.replace(reLower, (match) => match.toLowerCase());
+	var str = this.replace(/\b\w/g, (match) => match.toUpperCase());
+	return str.replace(reLower, (match, index) => (index === 0) ? match : match.toLowerCase()).replace(reUpper, match => match.toUpperCase());
 };
-//console.log(sent.toTitleCase())
+//console.log(`this declaration:\n"${sent}" becomes "${sent.toTitleCase()}"`);
 
 const toTitle = (text) => {
-	var str = text.replaceAll(/\b\w/g, (match) => match.toUpperCase());
-
     // Certain words such as initialisms or acronyms should be left uppercase
-	const upper = ["Id", "Tv"];
-	const reUpper = new RegExp(`\\b(${upper.join("|")})\\b`, "g");
-	str = str.replace(reUpper, (match) => match.toUpperCase());
+	const upper = ["Id", "Tv", "Tmu", "Q&a"];
+	const reUpper = new RegExp(`\\b${upper.join("|")}\\b`, "g");
+	//Lower Case
+	const lower = ['A', 'An', 'And', 'As', 'At', 'B/c', 'But', 'By', 'For', 'From', 'In', 'Into', 'Ios', 'Ipad', 'Iphone', 'Near', 'Nor', 'Of', 'On', 'Onto', 'Or', 'The', 'To', 'V.', 'Versus', 'Via', 'Vs\.', 'W\.', 'W/', 'With'];
+	const reLower = new RegExp(`\\b${lower.join("|")}\\b`, "g");
 
-	const lower = ['A', 'An', 'And', 'As', 'At', 'B/c', 'But', 'By', 'For', 'From', 'In', 'Into', 'Ios', 'Ipad', 'Iphone', 'Near', 'Nor', 'Of', 'On', 'Onto', 'Or', 'The', 'To', 'V.', 'Versus', 'Via', 'Vs.', 'W.', 'W/', 'With'];
-	const reLower = new RegExp(`\\b(${lower.join("|")})\\b`, "g");
-
-	if (str.search(reLower) === 0) {
-        let ignore = str.match(reLower)[0];
-		return ignore + str.substring(ignore.length).replace(reLower, (match) => match.toLowerCase());
-	}
-	return str.replace(reLower, (match) => match.toLowerCase());
+	var str = text.replace(/\b\w/g, (match) => match.toUpperCase());
+	str = str.replace(reLower, (match, index) => (index === 0) ? match : match.toLowerCase());
+	str = str.replace(reUpper, match => match.toUpperCase());
+	return str
 };
 
-//console.log(`"${sent}" becomes "${toTitle(sent)}"`);
+//console.log(`Simple way:\n"${sent}" becomes "${toTitle(sent)}"`);
+
+const toTitles = (text) => {
+	const upper = ["Id", "Tv", "Tmu", "Q&a"];
+	const ignore = ['A', 'An', 'And', 'As', 'At', 'B/c', 'But', 'By', 'For', 'From', 'In', 'Is', 'Into', 'Ios', 'Ipad', 'Iphone', 'Near', 'Nor', 'Of', 'On', 'Onto', 'Or', 'The', 'To', 'V\\.', 'Versus', 'Via', 'Vs\\.', 'W\\.', 'W\/', 'With'];
+	
+	const exceptions = new RegExp(`[\\b\\s](?<upper>${upper.join("|")})|(?<lower>${ignore.join("|")})[\\b\\s]`, "g");
+	text = text.replace(/\b\w/g, (match) => match.toUpperCase())
+	return text.replace(exceptions, (match, p1, p2, index, string, groups) => 
+		(groups.lower) ? (index === 0) ? match : match.toLowerCase(): match.toUpperCase());
+}
+console.log(`"${sent}" => \n"${toTitles(sent)}"`);
