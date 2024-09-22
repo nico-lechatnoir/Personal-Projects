@@ -14,9 +14,7 @@ String.prototype.toTitleCase = function () {
 const toTitle = (text) => {
     // Certain words such as initialisms or acronyms should be left uppercase
 	const upper = ["Id", "Tv", "Tmu", "Q&a"];
-	const reUpper = new RegExp(`\\b${upper.join("|")}\\b`, "g");
-	//Lower Case
-	const lower = ['A', 'An', 'And', 'As', 'At', 'B/c', 'But', 'By', 'For', 'From', 'In', 'Into', 'Ios', 'Ipad', 'Iphone', 'Near', 'Nor', 'Of', 'On', 'Onto', 'Or', 'The', 'To', 'V.', 'Versus', 'Via', 'Vs\.', 'W\.', 'W/', 'With'];
+	const ignore = ['A', 'An', 'And', 'As', 'At', 'B/c', 'But', 'By', 'For', 'From', 'In', 'Into', 'Ios', 'Ipad', 'Iphone', 'Near', 'Nor', 'Of', 'On', 'Onto', 'Or', 'The', 'To', 'V\\.', 'Versus', 'Via', 'Vs\\.', 'W\\.', 'W\/', 'With'];
 	const reLower = new RegExp(`\\b${lower.join("|")}\\b`, "g");
 
 	var str = text.replace(/\b\w/g, (match) => match.toUpperCase());
